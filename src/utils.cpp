@@ -2,6 +2,7 @@
 #include <cstdio>
 #include <cwchar>
 #include <windows.h>
+#include <Shlobj.h>
 
 std::wstring Utils::utf8ToWide(std::string_view str)
 {
@@ -110,4 +111,20 @@ std::string Utils::getClipboardText()
     GlobalUnlock(hData);
     CloseClipboard();
     return text;
+}
+
+std::optional<std::filesystem::path> Utils::getLocalAppDataPath()
+{
+    PWSTR rawPath = nullptr;
+
+    if (FAILED(SHGetKnownFolderPath(FOLDERID_LocalAppData, KF_FLAG_DEFAULT, nullptr,
+                                    &rawPath)))
+    {
+        return std::nullopt;
+    }
+
+    std::filesystem::path path{rawPath};
+    CoTaskMemFree(rawPath);
+
+    return path;
 }

@@ -2,6 +2,8 @@
 
 #include <string>
 #include <string_view>
+#include <optional>
+#include <filesystem>
 
 namespace Utils
 {
@@ -10,4 +12,5 @@ std::string wideToUtf8(std::wstring_view str);
 void createConsole(const char* title);
 std::string getModulePath(void* module);
 std::string getClipboardText();
+std::optional<std::filesystem::path> getLocalAppDataPath();
 } // namespace Utils

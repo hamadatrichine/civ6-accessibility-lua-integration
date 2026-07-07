@@ -29,5 +29,7 @@ void LuaApi::injectAccessibilityTable(LuaBindings::lua_State* L)
     pushClosure(L, LuaMethods::unregisterCharInputHandler, -2,
                 "UnregisterGlobalCharInputHandler");
     pushClosure(L, LuaMethods::getClipboardText, -2, "GetClipboardText");
+    pushClosure(L, LuaMethods::getConfigValue, -2, "GetConfigValue");
+    pushClosure(L, LuaMethods::setConfigValue, -2, "SetConfigValue");
     LuaBindings::setfield(L, -2, "CAI");
 }

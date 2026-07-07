@@ -68,13 +68,15 @@ add_library(${PROJECT_NAME} SHARED
 	src/utils.cpp
 	src/luaBindings.cpp
 	src/luaMethods.cpp
+	src/config.cpp
 )
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-	UNICODE
-	_UNICODE
-	WIN32_LEAN_AND_MEAN
-	NOMINMAX
-	$<$<CONFIG:Debug>:CAI_DEV_LOGGING=1>
+target_compile_definitions(${PROJECT_NAME}
+	PRIVATE
+		UNICODE
+		_UNICODE
+		WIN32_LEAN_AND_MEAN
+		NOMINMAX
+		$<$<CONFIG:Debug>:CAI_DEV_LOGGING=1>
 )
 target_link_libraries(${PROJECT_NAME} PRIVATE minhook spdlog::spdlog tolkStatic)
 
@@ -88,7 +90,8 @@ if(TOLK_LIBS)
 	)
 endif()
 
-install(TARGETS ${PROJECT_NAME}
+install(
+	TARGETS ${PROJECT_NAME}
 	RUNTIME DESTINATION "${CIV6_GAME_BIN_DIR}"
 )
 

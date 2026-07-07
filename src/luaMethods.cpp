@@ -1,5 +1,6 @@
-#include "charInput.h"
 #include "luaMethods.h"
+#include "config.h"
+#include "charInput.h"
 #include "luaBindings.h"
 #include "luaTypes.h"
 #include "utils.h"
@@ -102,5 +103,25 @@ int LuaMethods::getClipboardText(LuaBindings::lua_State* L)
 {
     std::string text = Utils::getClipboardText();
     LuaBindings::pushstring(L, text.c_str());
+    return 1;
+}
+
+int LuaMethods::getConfigValue(LuaBindings::lua_State* L)
+{
+    const char* section = LuaBindings::checklstring(L, 1, nullptr);
+    const char* key = LuaBindings::checklstring(L, 2, nullptr);
+    const char* defaultValue = LuaBindings::checklstring(L, 3, nullptr);
+    std::string value = Config::instance().getValue(section, key, defaultValue);
+    LuaBindings::pushstring(L, value.c_str());
+    return 1;
+}
+
+int LuaMethods::setConfigValue(LuaBindings::lua_State* L)
+{
+    const char* section = LuaBindings::checklstring(L, 1, nullptr);
+    const char* key = LuaBindings::checklstring(L, 2, nullptr);
+    const char* value = LuaBindings::checklstring(L, 3, nullptr);
+    bool success = Config::instance().setValue(section, key, value);
+    LuaBindings::pushboolean(L, success);
     return 1;
 }
