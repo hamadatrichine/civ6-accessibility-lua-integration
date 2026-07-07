@@ -1,7 +1,7 @@
 # Civ VI Accessibility Integration
 
 DLL integration layer that exposes selected Tolk screen-reader functions to
-Civilization VI's Lua environment in addition to character input routing and
+Civilization VI's Lua environment in addition to character input routing, configuration, and
 clipboard functionality.
 
 ## Requirements
@@ -87,4 +87,6 @@ ExposedMembers.CAI.DetectScreenReader() -> str_utf8
 ExposedMembers.CAI.GetClipboardText() -> str_utf8
 ExposedMembers.CAI.RegisterGlobalCharInputHandler(callback: (char: str_utf8) -> nil) -> nil
 ExposedMembers.CAI.UnregisterGlobalCharInputHandler() -> nil
+ExposedMembers.CAI.GetConfigValue(section: str_utf8,  key: str_utf8, defaultValue: str_utf8) -> str_utf8
+ExposedMembers.CAI.SetConfigValue(section: str_utf8,  key: str_utf8, value: str_utf8) -> bool
 ```
