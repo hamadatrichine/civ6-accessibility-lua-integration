@@ -110,6 +110,9 @@ add_library(tolkStatic STATIC
 target_compile_definitions(tolkStatic PUBLIC UNICODE _UNICODE _EXPORTING)
 target_include_directories(tolkStatic PUBLIC "${tolk_SOURCE_DIR}/src")
 target_link_libraries(tolkStatic PUBLIC user32 ole32 oleaut32)
+set_target_properties(tolkStatic
+	PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+)
 
 add_library(${PROJECT_NAME} SHARED
 	src/charInput.cpp
@@ -124,6 +127,9 @@ add_library(${PROJECT_NAME} SHARED
 	src/audioManager.cpp
 	src/sound.cpp
 	src/luaAudio.cpp
+	src/updateManager.cpp
+	src/httpClient.cpp
+	src/luaUpdateManager.cpp
 )
 target_compile_definitions(${PROJECT_NAME}
 	PRIVATE
@@ -135,6 +141,7 @@ target_compile_definitions(${PROJECT_NAME}
 )
 target_link_libraries(${PROJECT_NAME}
 	PRIVATE
+		winhttp
 		minhook
 		spdlog::spdlog
 		tolkStatic
@@ -143,15 +150,24 @@ target_link_libraries(${PROJECT_NAME}
 		miniaudio_libopus;
 )
 
+set_target_properties(${PROJECT_NAME}
+	PROPERTIES ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib"
+)
+
 file(GLOB TOLK_LIBS "${tolk_SOURCE_DIR}/libs/x64/*.dll")
-if(TOLK_LIBS)
-	add_custom_command(
-		TARGET ${PROJECT_NAME}
-		POST_BUILD
-		COMMAND ${CMAKE_COMMAND} -E copy_if_different ${TOLK_LIBS}
-			"$<TARGET_FILE_DIR:${PROJECT_NAME}>"
-	)
-endif()
+set(RELEASE_FILES
+	${TOLK_LIBS}
+	"${CMAKE_SOURCE_DIR}/README.md"
+	"${CMAKE_SOURCE_DIR}/LICENSE"
+	"${CMAKE_SOURCE_DIR}/ide_helper.lua"
+)
+
+add_custom_command(
+	TARGET ${PROJECT_NAME}
+	POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E copy_if_different ${RELEASE_FILES}
+		"$<TARGET_FILE_DIR:${PROJECT_NAME}>"
+)
 
 install(
 	TARGETS ${PROJECT_NAME}

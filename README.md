@@ -1,5 +1,7 @@
 # Civ VI Accessibility Lua Integration
 
+![Build](https://github.com/hamadatrichine/civ6-accessibility-lua-integration/actions/workflows/release.yml/badge.svg)
+
 DLL integration layer that exposes selected Tolk screen-reader functions to
 Civilization VI's Lua environment in addition to character input routing, configuration, audio, and
 clipboard functionality.
@@ -93,6 +95,7 @@ ExposedMembers.CAI.UnregisterGlobalCharInputHandler() -> nil
 ExposedMembers.CAI.GetConfigValue(section: str_utf8, key: str_utf8, defaultValue: str_utf8) -> str_utf8
 ExposedMembers.CAI.SetConfigValue(section: str_utf8, key: str_utf8, value: str_utf8) -> bool
 ExposedMembers.CAI.IsGameWindowFocused() -> bool
+ExposedMembers.CAI.GetLatestVersion() -> str_utf8
 
 -- Audio
 ExposedMembers.CAI.LoadSound(filePath: str_utf8) -> SoundHandle | nil

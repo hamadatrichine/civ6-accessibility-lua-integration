@@ -75,6 +75,9 @@ function CAI.SetConfigValue(section, key, value) end
 ---@return boolean
 function CAI.IsGameWindowFocused() end
 
+---@return str_utf8
+function CAI.GetLatestVersion() end
+
 --------------------------------------------------------------------------------
 -- Audio
 --------------------------------------------------------------------------------

@@ -1,6 +1,7 @@
 #include "luaApi.h"
 #include "luaMethods.h"
 #include "luaAudio.h"
+#include "luaUpdateManager.h"
 
 using namespace LuaBindings;
 void LuaApi::injectAccessibilityTable(lua_State* L)
@@ -25,5 +26,6 @@ void LuaApi::injectAccessibilityTable(lua_State* L)
     pushClosure(L, LuaMethods::setConfigValue, -2, "SetConfigValue");
     pushClosure(L, LuaMethods::isGameWindowFocused, -2, "IsGameWindowFocused");
     LuaAudio::registerApiFunctions(L);
+    LuaUpdateManager::registerApiFunctions(L);
     setfield(L, -2, "CAI");
 }

@@ -8,6 +8,7 @@
 #include <exception>
 #include <string>
 #include "audioManager.h"
+#include "updateManager.h"
 
 static HMODULE currentModule = nullptr;
 
@@ -55,6 +56,7 @@ static unsigned int initialize()
     {
         spdlog::error("Failed to import Lua symbols");
     }
+    UpdateManager::instance().startCheck();
     Log::flush();
     // Note(Hamada): return 3 for no device, so that the game gives up  on trying to use
     // the dll
