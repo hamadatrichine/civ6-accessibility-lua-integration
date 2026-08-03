@@ -1,6 +1,6 @@
 # Civ VI Accessibility Lua Integration
 
-![Build](https://github.com/hamadatrichine/civ6-accessibility-lua-integration/actions/workflows/release.yml/badge.svg)
+[![Build and Release](https://github.com/hamadatrichine/civ6-accessibility-lua-integration/actions/workflows/release.yml/badge.svg)](https://github.com/hamadatrichine/civ6-accessibility-lua-integration/actions/workflows/release.yml)
 
 DLL integration layer that exposes selected Tolk screen-reader functions to
 Civilization VI's Lua environment in addition to character input routing, configuration, audio, and
