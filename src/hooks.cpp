@@ -7,6 +7,7 @@
 #include <cstddef>
 #include <spdlog/spdlog.h>
 #include <windows.h>
+#include "config.h"
 
 static LuaBindings::loadbuffer_t originalLoadBuffer = nullptr;
 static bool hooksInstalled = false;
@@ -132,6 +133,7 @@ LRESULT WINAPI HookedDispatchMessageW(const MSG* msg)
                     title.resize(copied);
 
                     gameWindow = root;
+                    Config::instance().gameWindow = gameWindow;
 
                     spdlog::info("Detected game window: {} | {}", (void*)gameWindow,
                                  Utils::wideToUtf8(title));

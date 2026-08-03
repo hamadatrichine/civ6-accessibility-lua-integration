@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.24)
-project(civ6AccessibilityIntegration VERSION 0.3.0 LANGUAGES C CXX)
+project(civ6AccessibilityLuaIntegration VERSION 0.3.0 LANGUAGES C CXX)
 
 if(NOT CMAKE_SIZEOF_VOID_P EQUAL 8)
 	message(FATAL_ERROR "This project is only supported on 64-bit platforms.")
@@ -42,6 +42,58 @@ fetchContent_Declare(
 )
 fetchContent_MakeAvailable(tolk)
 
+FetchContent_Declare(
+	ogg
+	GIT_REPOSITORY
+	https://github.com/xiph/ogg.git
+	GIT_TAG
+	v1.3.6
+)
+
+FetchContent_Declare(
+	vorbis
+	GIT_REPOSITORY
+	https://github.com/xiph/vorbis.git
+	git_TAG
+	v1.3.7
+)
+
+FetchContent_Declare(
+	opus
+	GIT_REPOSITORY
+	https://github.com/xiph/opus.git
+	GIT_TAG
+	v1.5.2
+)
+
+set(OP_DISABLE_HTTP ON CACHE BOOL "" FORCE)
+set(OP_DISABLE_DOCS ON CACHE BOOL "" FORCE)
+set(OP_DISABLE_EXAMPLES ON CACHE BOOL "" FORCE)
+
+FetchContent_Declare(
+	opusfile
+	GIT_REPOSITORY
+	https://github.com/xiph/opusfile.git
+	GIT_TAG
+	6dfd29e7adb87f2e193575fc3fa88cbf1a0b27df
+)
+
+FetchContent_MakeAvailable(
+	ogg
+	vorbis
+	opus
+	opusfile
+)
+
+fetchContent_Declare(
+	miniaudio
+	GIT_REPOSITORY
+	https://github.com/mackron/miniaudio.git
+	GIT_TAG
+	0.11.25
+)
+fetchContent_MakeAvailable(miniaudio)
+
 add_library(tolkStatic STATIC
 	"${tolk_SOURCE_DIR}/src/Tolk.cpp"
 	"${tolk_SOURCE_DIR}/src/ScreenReaderDriverJAWS.cpp"
@@ -69,6 +121,9 @@ add_library(${PROJECT_NAME} SHARED
 	src/luaBindings.cpp
 	src/luaMethods.cpp
 	src/config.cpp
+	src/audioManager.cpp
+	src/sound.cpp
+	src/luaAudio.cpp
 )
 target_compile_definitions(${PROJECT_NAME}
 	PRIVATE
@@ -78,7 +133,15 @@ target_compile_definitions(${PROJECT_NAME}
 		NOMINMAX
 		$<$<CONFIG:Debug>:CAI_DEV_LOGGING=1>
 )
-target_link_libraries(${PROJECT_NAME} PRIVATE minhook spdlog::spdlog tolkStatic)
+target_link_libraries(${PROJECT_NAME}
+	PRIVATE
+		minhook
+		spdlog::spdlog
+		tolkStatic
+		miniaudio
+		miniaudio_libvorbis
+		miniaudio_libopus;
+)
 
 file(GLOB TOLK_LIBS "${tolk_SOURCE_DIR}/libs/x64/*.dll")
 if(TOLK_LIBS)

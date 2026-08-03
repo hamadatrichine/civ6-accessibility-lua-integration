@@ -32,6 +32,10 @@ unref_t unref = nullptr;
 rawgeti_t rawgeti = nullptr;
 checktype_t checktype = nullptr;
 checklstring_t checklstring = nullptr;
+checkinteger_t checkinteger = nullptr;
+checknumber_t checknumber = nullptr;
+pushnumber_t pushnumber = nullptr;
+pushnil_t pushnil = nullptr;
 toboolean_t toboolean = nullptr;
 type_t type = nullptr;
 pushfstring_t pushfstring = nullptr;
@@ -40,6 +44,12 @@ createtable_t createtable = nullptr;
 dostring_t dostring = nullptr;
 pcall_t pcall = nullptr;
 loadbuffer_t loadbuffer = nullptr;
+
+void pushClosure(lua_State* L, cclosure_t closure, int index, const char* key)
+{
+    pushnamedcclosure(L, closure, 0, key, 0);
+    setfield(L, index, key);
+}
 
 bool importSymbols()
 {
@@ -88,6 +98,18 @@ bool importSymbols()
         imported &= importSymbol(hModule, pushinteger,
                                  "?hksi_lua_pushinteger@@YAXPEAUlua_State@@H@Z",
                                  "hksi_lua_pushinteger");
+        imported &= importSymbol(hModule, checkinteger,
+                                 "?luaL_checkinteger@@YAHPEAUlua_State@@H@Z",
+                                 "luaL_checkinteger");
+        imported &= importSymbol(hModule, checknumber,
+                                 "?luaL_checknumber@@YANPEAUlua_State@@H@Z",
+                                 "luaL_checknumber");
+        imported &= importSymbol(hModule, pushnumber,
+                                 "?hksi_lua_pushnumber@@YAXPEAUlua_State@@N@Z",
+                                 "hksi_lua_pushnumber");
+        imported &=
+            importSymbol(hModule, pushnil, "?hksi_lua_pushnil@@YAXPEAUlua_State@@@Z",
+                         "hksi_lua_pushnil");
         imported &= importSymbol(hModule, createtable,
                                  "?hksi_lua_createtable@@YAXPEAUlua_State@@HH@Z",
                                  "hksi_lua_createtable");

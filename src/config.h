@@ -37,4 +37,8 @@ class Config
 
   private:
     CSimpleIniA mIni;
+
+  public:
+    // TODO: move this to a global state class
+    void* gameWindow = nullptr;
 };

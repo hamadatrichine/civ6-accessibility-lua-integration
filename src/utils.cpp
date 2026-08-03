@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "config.h"
 #include <cstdio>
 #include <cwchar>
 #include <windows.h>
@@ -84,6 +85,12 @@ std::string Utils::getModulePath(void* module)
         result.resize(result.size() * 2);
     }
     return wideToUtf8(result);
+}
+
+bool Utils::isGameWindowFocused()
+{
+    return Config::instance().gameWindow != nullptr &&
+           GetForegroundWindow() == static_cast<HWND>(Config::instance().gameWindow);
 }
 
 std::string Utils::getClipboardText()

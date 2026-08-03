@@ -7,6 +7,7 @@
 #include "utils.h"
 #include <exception>
 #include <string>
+#include "audioManager.h"
 
 static HMODULE currentModule = nullptr;
 
@@ -32,6 +33,10 @@ static unsigned int initialize()
     Tolk_Load();
     spdlog::info("Tolk status: loaded={}, speech={}, braille={}", Tolk_IsLoaded(),
                  Tolk_HasSpeech(), Tolk_HasBraille());
+    if (!AudioManager::instance().initialize())
+    {
+        spdlog::error("Failed to initialize audio manager");
+    }
 
     if (LuaBindings::importSymbols())
     {

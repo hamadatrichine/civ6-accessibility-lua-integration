@@ -125,3 +125,10 @@ int LuaMethods::setConfigValue(LuaBindings::lua_State* L)
     LuaBindings::pushboolean(L, success);
     return 1;
 }
+
+int LuaMethods::isGameWindowFocused(LuaBindings::lua_State* L)
+{
+    bool isFocused = Utils::isGameWindowFocused();
+    LuaBindings::pushboolean(L, isFocused);
+    return 1;
+}
